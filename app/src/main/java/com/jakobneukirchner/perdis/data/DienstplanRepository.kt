@@ -4,7 +4,6 @@ import com.jakobneukirchner.perdis.data.util.WebViewScraperUtil
 import com.jakobneukirchner.perdis.model.Dienst
 import com.jakobneukirchner.perdis.model.Fahrt
 import org.jsoup.Jsoup
-import org.jsoup.nodes.Document
 
 class DienstplanRepository(
     private val webViewScraper: WebViewScraperUtil

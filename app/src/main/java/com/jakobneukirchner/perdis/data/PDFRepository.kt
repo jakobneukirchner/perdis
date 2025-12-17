@@ -4,8 +4,6 @@ import android.content.Context
 import com.jakobneukirchner.perdis.data.util.PDFUtil
 import com.jakobneukirchner.perdis.data.util.WebViewScraperUtil
 import java.io.File
-import java.text.SimpleDateFormat
-import java.util.*
 
 class PDFRepository(
     context: Context,

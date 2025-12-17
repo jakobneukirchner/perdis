@@ -44,10 +44,6 @@ class WebViewScraperUtil(private val context: Context) {
                                 passField.value = '${credentials.password}';
                                 var form = userField.closest('form') || document.querySelector('form');
                                 if (form) form.submit();
-                                else {
-                                    var buttons = document.querySelectorAll('button[type="submit"], input[type="submit"]');
-                                    if (buttons.length > 0) buttons[0].click();
-                                }
                             }
                         })();
                     """.trimIndent()
@@ -60,17 +56,12 @@ class WebViewScraperUtil(private val context: Context) {
                     ) { html ->
                         cont.resume(html?.replace("\"", "") ?: "")
                     }
-                } else if (url?.contains("default", ignoreCase = true) == true && !loginAttempted) {
-                    // Zweiter Login-Versuch auf Startseite
-                    loginAttempted = true
-                    view.loadUrl("https://perdisweb.verkehrs-ag.de/WebComm/roster.aspx")
                 }
             }
         }
 
         webView.loadUrl("https://perdisweb.verkehrs-ag.de/WebComm/default.aspx")
 
-        // Timeout nach 15 Sekunden
         android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
             if (!scraped) {
                 cont.resume("")
@@ -78,12 +69,8 @@ class WebViewScraperUtil(private val context: Context) {
         }, 15000)
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
-    suspend fun getPdfUrl(
-        date: String
-    ): String = suspendCancellableCoroutine { cont ->
-        val url = "https://perdisweb.verkehrs-ag.de/WebComm/shiprint.aspx?$date"
-        cont.resume(url)
+    fun getPdfUrl(date: String): String {
+        return "https://perdisweb.verkehrs-ag.de/WebComm/shiprint.aspx?$date"
     }
 
     fun clearCookies() {

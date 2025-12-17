@@ -34,10 +34,3 @@ data class DienstplanState(
     val dienste: List<Dienst> = emptyList(),
     val errorMessage: String? = null
 )
-
-data class TagesplanState(
-    val datum: String = "",
-    val dienst: Dienst? = null,
-    val isLoading: Boolean = false,
-    val errorMessage: String? = null
-)

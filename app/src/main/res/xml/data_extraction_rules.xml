@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data-extraction-rules>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">perdisweb.verkehrs-ag.de</domain>
+    </domain-config>
+</data-extraction-rules>

@@ -1,12 +1,32 @@
 package com.jakobneukirchner.perdis.ui
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Divider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.jakobneukirchner.perdis.model.Dienst
@@ -16,7 +36,6 @@ import com.jakobneukirchner.perdis.viewmodel.DienstplanViewModel
 @Composable
 fun DienstplanScreen(
     viewModel: DienstplanViewModel,
-    onOpenPdf: (String) -> Unit,
     onLogout: () -> Unit
 ) {
     val state by viewModel.state.collectAsState()
@@ -31,7 +50,7 @@ fun DienstplanScreen(
                 title = { Text("Perdis Dienstplan") },
                 actions = {
                     IconButton(onClick = onLogout) {
-                        Icon(Icons.Default.MoreVert, contentDescription = "Mehr")
+                        Icon(Icons.Default.MoreVert, contentDescription = "Abmelden")
                     }
                 }
             )
@@ -43,7 +62,7 @@ fun DienstplanScreen(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(padding),
-                    contentAlignment = androidx.compose.ui.Alignment.Center
+                    contentAlignment = Alignment.Center
                 ) {
                     CircularProgressIndicator()
                 }
@@ -53,7 +72,7 @@ fun DienstplanScreen(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(padding),
-                    contentAlignment = androidx.compose.ui.Alignment.Center
+                    contentAlignment = Alignment.Center
                 ) {
                     Text("Fehler: ${state.errorMessage}")
                 }
@@ -66,7 +85,7 @@ fun DienstplanScreen(
                         .padding(8.dp)
                 ) {
                     items(state.dienste) { dienst ->
-                        DienstCard(dienst, onOpenPdf)
+                        DienstCard(dienst)
                         Spacer(Modifier.height(8.dp))
                     }
                 }
@@ -77,8 +96,7 @@ fun DienstplanScreen(
 
 @Composable
 private fun DienstCard(
-    dienst: Dienst,
-    onOpenPdf: (String) -> Unit
+    dienst: Dienst
 ) {
     Card(
         modifier = Modifier.fillMaxWidth()
@@ -98,15 +116,6 @@ private fun DienstCard(
             dienst.fahrten.forEach { fahrt ->
                 FahrtPerlschnur(fahrt)
             }
-            
-            Button(
-                onClick = { onOpenPdf(dienst.datum) },
-                modifier = Modifier
-                    .align(androidx.compose.ui.Alignment.End)
-                    .padding(top = 8.dp)
-            ) {
-                Text("PDF")
-            }
         }
     }
 }
@@ -120,7 +129,7 @@ private fun FahrtPerlschnur(fahrt: Fahrt) {
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = androidx.compose.foundation.layout.Arrangement.SpaceBetween
         ) {
             Text(
                 fahrt.linie,
