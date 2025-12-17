@@ -1,9 +1,20 @@
-buildscript {
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+}
+
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
         mavenCentral()
     }
 }
+
+rootProject.name = "Perdis"
 
 plugins {
     id("com.android.application") version "8.6.0" apply false
