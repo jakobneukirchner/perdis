@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.jakobneukirchner.perdis.data.DienstplanRepository
 import com.jakobneukirchner.perdis.data.LoginRepository
 import com.jakobneukirchner.perdis.data.util.CredentialsManager
-import com.jakobneukirchner.perdis.data.util.WebViewScraperUtil
+import com.jakobneukirchner.perdis.data.util.PerdisWebViewManager
 
 class PerdisViewModelFactory(
     private val context: Context
@@ -15,9 +15,9 @@ class PerdisViewModelFactory(
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         val credentialsManager = CredentialsManager(context)
-        val webViewScraperUtil = WebViewScraperUtil(context)
-        val loginRepository = LoginRepository(credentialsManager, webViewScraperUtil)
-        val dienstplanRepository = DienstplanRepository(webViewScraperUtil)
+        val webViewManager = PerdisWebViewManager(context)
+        val loginRepository = LoginRepository(credentialsManager, webViewManager)
+        val dienstplanRepository = DienstplanRepository(webViewManager)
 
         return when (modelClass) {
             LoginViewModel::class.java ->
