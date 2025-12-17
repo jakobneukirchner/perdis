@@ -34,38 +34,21 @@ class WebViewScraperUtil(private val context: Context) {
                     loginAttempted = true
                     val js = """
                         (function() {
-                            // Find all input fields
-                            var inputs = document.getElementsByTagName('input');
-                            var username = null;
-                            var password = null;
+                            // Use exact ASP.NET field names from HTML
+                            var userField = document.getElementsByName('ctl00\$cntMainBody\$lgnView\$lgnLogin\$UserName')[0];
+                            var passField = document.getElementsByName('ctl00\$cntMainBody\$lgnView\$lgnLogin\$Password')[0];
+                            var submitBtn = document.getElementById('ctl00_cntMainBody_lgnView_lgnLogin_LoginButton');
                             
-                            // Try to find username and password fields by type or name
-                            for (var i = 0; i < inputs.length; i++) {
-                                var type = inputs[i].type;
-                                var name = inputs[i].name || '';
+                            if (userField && passField) {
+                                userField.value = '${credentials.username}';
+                                passField.value = '${credentials.password}';
                                 
-                                if (type === 'text' && !password) {
-                                    username = inputs[i];
-                                } else if (type === 'password') {
-                                    password = inputs[i];
-                                }
-                            }
-                            
-                            // Fill in credentials
-                            if (username && password) {
-                                username.value = '${credentials.username}';
-                                password.value = '${credentials.password}';
-                                
-                                // Try to find and click submit button
-                                var buttons = document.getElementsByTagName('button');
-                                for (var j = 0; j < buttons.length; j++) {
-                                    buttons[j].click();
-                                    break;
-                                }
-                                
-                                // If no button, try form submit
-                                if (buttons.length === 0) {
-                                    var form = username.closest('form');
+                                // Click submit button
+                                if (submitBtn) {
+                                    submitBtn.click();
+                                } else {
+                                    // Fallback: submit the form
+                                    var form = userField.closest('form');
                                     if (form) form.submit();
                                 }
                             }
@@ -73,9 +56,17 @@ class WebViewScraperUtil(private val context: Context) {
                     """.trimIndent()
                     view.evaluateJavascript(js, null)
                 }
-                // Scrape on shift or roster page
-                else if (!scraped && (url?.contains("shift.aspx", ignoreCase = true) == true || 
-                         url?.contains("roster.aspx", ignoreCase = true) == true)) {
+                // Scrape on roster page (after login redirect)
+                else if (!scraped && url?.contains("roster.aspx", ignoreCase = true) == true) {
+                    scraped = true
+                    view.evaluateJavascript(
+                        "(function(){return document.documentElement.outerHTML;})();"
+                    ) { html ->
+                        cont.resume(html?.replace("\"", "") ?: "")
+                    }
+                }
+                // Scrape on shift page as fallback
+                else if (!scraped && url?.contains("shift.aspx", ignoreCase = true) == true) {
                     scraped = true
                     view.evaluateJavascript(
                         "(function(){return document.documentElement.outerHTML;})();"
