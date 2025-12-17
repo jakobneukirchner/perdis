@@ -34,20 +34,17 @@ class WebViewScraperUtil(private val context: Context) {
                     loginAttempted = true
                     val js = """
                         (function() {
-                            // Use exact ASP.NET field names from HTML
-                            var userField = document.getElementsByName('ctl00\$cntMainBody\$lgnView\$lgnLogin\$UserName')[0];
-                            var passField = document.getElementsByName('ctl00\$cntMainBody\$lgnView\$lgnLogin\$Password')[0];
+                            var userField = document.getElementsByName('ctl00\${'$'}cntMainBody\${'$'}lgnView\${'$'}lgnLogin\${'$'}UserName')[0];
+                            var passField = document.getElementsByName('ctl00\${'$'}cntMainBody\${'$'}lgnView\${'$'}lgnLogin\${'$'}Password')[0];
                             var submitBtn = document.getElementById('ctl00_cntMainBody_lgnView_lgnLogin_LoginButton');
                             
                             if (userField && passField) {
                                 userField.value = '${credentials.username}';
                                 passField.value = '${credentials.password}';
                                 
-                                // Click submit button
                                 if (submitBtn) {
                                     submitBtn.click();
                                 } else {
-                                    // Fallback: submit the form
                                     var form = userField.closest('form');
                                     if (form) form.submit();
                                 }
@@ -79,7 +76,6 @@ class WebViewScraperUtil(private val context: Context) {
 
         webView.loadUrl("https://perdisweb.verkehrs-ag.de/WebComm/default.aspx")
 
-        // Extended timeout - 30 seconds for login process
         android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
             if (!scraped) {
                 cont.resume("")
