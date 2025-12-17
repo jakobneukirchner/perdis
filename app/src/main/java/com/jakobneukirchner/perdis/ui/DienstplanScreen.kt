@@ -14,6 +14,7 @@ import com.jakobneukirchner.perdis.model.Dienst
 import com.jakobneukirchner.perdis.model.Fahrt
 import com.jakobneukirchner.perdis.viewmodel.DienstplanViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DienstplanScreen(
     viewModel: DienstplanViewModel,
@@ -100,6 +101,6 @@ private fun FahrtPerlschnur(fahrt: Fahrt) {
             Text(fahrt.ankunftszeit, style = MaterialTheme.typography.bodySmall, modifier = Modifier.weight(0.2f))
             Text(fahrt.ort, style = MaterialTheme.typography.bodySmall, modifier = Modifier.weight(0.3f))
         }
-        Divider(modifier = Modifier.padding(vertical = 4.dp))
+        HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
     }
 }
