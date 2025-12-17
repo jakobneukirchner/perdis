@@ -1,0 +1,10 @@
+# This file is intentionally incomplete - for reference only
+# On your machine, create local.properties with:
+
+# Windows
+sdk.dir=C:\\Users\\[USERNAME]\\AppData\\Local\\Android\\Sdk
+
+# macOS/Linux
+# sdk.dir=/Users/[USERNAME]/Library/Android/sdk
+# or
+# sdk.dir=/home/[USERNAME]/Android/Sdk
