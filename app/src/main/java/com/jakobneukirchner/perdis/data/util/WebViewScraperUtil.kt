@@ -19,7 +19,6 @@ class WebViewScraperUtil(private val context: Context) {
         webView.settings.apply {
             javaScriptEnabled = true
             domStorageEnabled = true
-            databaseEnabled = true
         }
 
         CookieManager.getInstance().removeAllCookies(null)
@@ -30,23 +29,53 @@ class WebViewScraperUtil(private val context: Context) {
 
         webView.webViewClient = object : WebViewClient() {
             override fun onPageFinished(view: WebView, url: String?) {
-                if (url?.contains("login", ignoreCase = true) == true && !loginAttempted) {
+                // Try login on default.aspx page
+                if (!loginAttempted && url?.contains("default.aspx", ignoreCase = true) == true) {
                     loginAttempted = true
                     val js = """
                         (function() {
-                            var userField = document.querySelector('input[type="text"]');
-                            var passField = document.querySelector('input[type="password"]');
-                            if (userField && passField) {
-                                userField.value = '${credentials.username}';
-                                passField.value = '${credentials.password}';
-                                var form = userField.closest('form');
-                                if (form) form.submit();
+                            // Find all input fields
+                            var inputs = document.getElementsByTagName('input');
+                            var username = null;
+                            var password = null;
+                            
+                            // Try to find username and password fields by type or name
+                            for (var i = 0; i < inputs.length; i++) {
+                                var type = inputs[i].type;
+                                var name = inputs[i].name || '';
+                                
+                                if (type === 'text' && !password) {
+                                    username = inputs[i];
+                                } else if (type === 'password') {
+                                    password = inputs[i];
+                                }
+                            }
+                            
+                            // Fill in credentials
+                            if (username && password) {
+                                username.value = '${credentials.username}';
+                                password.value = '${credentials.password}';
+                                
+                                // Try to find and click submit button
+                                var buttons = document.getElementsByTagName('button');
+                                for (var j = 0; j < buttons.length; j++) {
+                                    buttons[j].click();
+                                    break;
+                                }
+                                
+                                // If no button, try form submit
+                                if (buttons.length === 0) {
+                                    var form = username.closest('form');
+                                    if (form) form.submit();
+                                }
                             }
                         })();
                     """.trimIndent()
                     view.evaluateJavascript(js, null)
-                } else if ((url?.contains("shift", ignoreCase = true) == true || 
-                           url?.contains("WebComm", ignoreCase = true) == true) && !scraped) {
+                }
+                // Scrape on shift or roster page
+                else if (!scraped && (url?.contains("shift.aspx", ignoreCase = true) == true || 
+                         url?.contains("roster.aspx", ignoreCase = true) == true)) {
                     scraped = true
                     view.evaluateJavascript(
                         "(function(){return document.documentElement.outerHTML;})();"
@@ -59,11 +88,12 @@ class WebViewScraperUtil(private val context: Context) {
 
         webView.loadUrl("https://perdisweb.verkehrs-ag.de/WebComm/default.aspx")
 
+        // Extended timeout - 30 seconds for login process
         android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
             if (!scraped) {
                 cont.resume("")
             }
-        }, 15000)
+        }, 30000)
     }
 
     fun getShiftUrl(date: String): String {
