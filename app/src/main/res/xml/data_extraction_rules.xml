@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <data-extraction-rules>
-    <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">perdisweb.verkehrs-ag.de</domain>
-    </domain-config>
+    <!-- Exclude all encrypted shared preferences from backup -->
+    <cloud-backup excludeUri="androidx.security.crypto" />
+    <cloud-backup excludeUri="com.jakobneukirchner.perdis.fileprovider" />
 </data-extraction-rules>
