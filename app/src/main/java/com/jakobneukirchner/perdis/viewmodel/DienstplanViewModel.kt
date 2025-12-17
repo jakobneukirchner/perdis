@@ -19,7 +19,7 @@ class DienstplanViewModel(
         viewModelScope.launch {
             _state.value = _state.value.copy(isLoading = true, errorMessage = null)
             try {
-                val dienste = dienstplanRepository.loadRoster()
+                val dienste = dienstplanRepository.loadShifts()
                 _state.value = _state.value.copy(
                     isLoading = false,
                     dienste = dienste
