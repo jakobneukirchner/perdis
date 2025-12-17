@@ -1,0 +1,43 @@
+# Gradle
+.gradle/
+build/
+*.apk
+*.ap_
+*.dex
+*.class
+bin/
+gen/
+out/
+
+# Android Studio
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+*.isd_symbols
+
+# Keystore files
+*.jks
+*.keystore
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# Misc
+*.swp
+*.swo
+*~
+.env
