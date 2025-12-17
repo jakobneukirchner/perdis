@@ -23,6 +23,12 @@ fun LoginScreen(
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
+    // Show loading screen during login
+    if (state.isLoading) {
+        LoadingScreen("Anmelden im Hintergrund...\nBitte warten")
+        return
+    }
+
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -46,7 +52,8 @@ fun LoginScreen(
                 singleLine = true,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 16.dp)
+                    .padding(bottom = 16.dp),
+                enabled = !state.isLoading
             )
 
             OutlinedTextField(
@@ -55,7 +62,8 @@ fun LoginScreen(
                 label = { Text("Passwort") },
                 visualTransformation = PasswordVisualTransformation(),
                 singleLine = true,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                enabled = !state.isLoading
             )
 
             Spacer(Modifier.height(24.dp))
@@ -65,15 +73,7 @@ fun LoginScreen(
                 enabled = !state.isLoading && username.isNotEmpty() && password.isNotEmpty(),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                if (state.isLoading) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(20.dp),
-                        strokeWidth = 2.dp,
-                        color = MaterialTheme.colorScheme.onPrimary
-                    )
-                } else {
-                    Text("Anmelden")
-                }
+                Text("Anmelden")
             }
 
             state.errorMessage?.let {
