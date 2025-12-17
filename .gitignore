@@ -17,11 +17,11 @@ out/
 *.ipr
 *.isd_symbols
 
-# Keystore files
+# Keystore
 *.jks
 *.keystore
 
-# Local configuration
+# Local
 local.properties
 
 # OS
