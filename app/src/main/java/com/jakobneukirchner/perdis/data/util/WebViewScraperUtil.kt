@@ -45,7 +45,7 @@ class WebViewScraperUtil(private val context: Context) {
                         })();
                     """.trimIndent()
                     view.evaluateJavascript(js, null)
-                } else if ((url?.contains("roster", ignoreCase = true) == true || 
+                } else if ((url?.contains("shift", ignoreCase = true) == true || 
                            url?.contains("WebComm", ignoreCase = true) == true) && !scraped) {
                     scraped = true
                     view.evaluateJavascript(
@@ -64,6 +64,18 @@ class WebViewScraperUtil(private val context: Context) {
                 cont.resume("")
             }
         }, 15000)
+    }
+
+    fun getShiftUrl(date: String): String {
+        return "https://perdisweb.verkehrs-ag.de/WebComm/shift.aspx?$date"
+    }
+
+    fun getRosterUrl(date: String): String {
+        return "https://perdisweb.verkehrs-ag.de/WebComm/roster.aspx?$date"
+    }
+
+    fun getPdfUrl(date: String): String {
+        return "https://perdisweb.verkehrs-ag.de/WebComm/shiprint.aspx?$date"
     }
 
     fun clearCookies() {
