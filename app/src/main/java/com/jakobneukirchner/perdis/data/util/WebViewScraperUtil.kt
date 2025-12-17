@@ -34,15 +34,12 @@ class WebViewScraperUtil(private val context: Context) {
                     loginAttempted = true
                     val js = """
                         (function() {
-                            var userField = document.querySelector('input[name="username"]') || 
-                                            document.querySelector('input[name="benutzername"]') ||
-                                            document.querySelector('input[type="text"]');
-                            var passField = document.querySelector('input[name="password"]') ||
-                                            document.querySelector('input[type="password"]');
+                            var userField = document.querySelector('input[type="text"]');
+                            var passField = document.querySelector('input[type="password"]');
                             if (userField && passField) {
                                 userField.value = '${credentials.username}';
                                 passField.value = '${credentials.password}';
-                                var form = userField.closest('form') || document.querySelector('form');
+                                var form = userField.closest('form');
                                 if (form) form.submit();
                             }
                         })();
@@ -67,10 +64,6 @@ class WebViewScraperUtil(private val context: Context) {
                 cont.resume("")
             }
         }, 15000)
-    }
-
-    fun getPdfUrl(date: String): String {
-        return "https://perdisweb.verkehrs-ag.de/WebComm/shiprint.aspx?$date"
     }
 
     fun clearCookies() {

@@ -1,43 +1,6 @@
-# Gradle
 .gradle/
 build/
-*.apk
-*.ap_
-*.dex
-*.class
-bin/
-gen/
-out/
-
-# Android Studio
 .idea/
-.vscode/
 *.iml
-*.iws
-*.ipr
-*.isd_symbols
-
-# Keystore
-*.jks
-*.keystore
-
-# Local
+*.apk
 local.properties
-
-# OS
-.DS_Store
-Thumbs.db
-
-# IDE
-.project
-.classpath
-.c9/
-*.launch
-.settings/
-*.sublime-workspace
-
-# Misc
-*.swp
-*.swo
-*~
-.env

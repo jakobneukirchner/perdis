@@ -30,7 +30,7 @@ class DienstplanRepository(
         val dienste = mutableListOf<Dienst>()
 
         try {
-            val table = doc.select("table[summary], table.roster, table").firstOrNull()
+            val table = doc.select("table").firstOrNull()
             table?.select("tbody tr")?.forEachIndexed { index, row ->
                 val cells = row.select("td")
                 if (cells.size >= 4) {

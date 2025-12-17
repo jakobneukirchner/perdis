@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.jakobneukirchner.perdis.data.DienstplanRepository
 import com.jakobneukirchner.perdis.data.LoginRepository
-import com.jakobneukirchner.perdis.data.PDFRepository
 import com.jakobneukirchner.perdis.data.util.CredentialsManager
 import com.jakobneukirchner.perdis.data.util.WebViewScraperUtil
 
@@ -19,7 +18,6 @@ class PerdisViewModelFactory(
         val webViewScraperUtil = WebViewScraperUtil(context)
         val loginRepository = LoginRepository(credentialsManager, webViewScraperUtil)
         val dienstplanRepository = DienstplanRepository(webViewScraperUtil)
-        val pdfRepository = PDFRepository(context, webViewScraperUtil)
 
         return when (modelClass) {
             LoginViewModel::class.java ->
